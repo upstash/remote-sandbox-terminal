@@ -1,0 +1,39 @@
+{
+  "name": "remote-sandbox-terminal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "opencode running somewhere else, in your terminal, over Upstash Realtime.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upstash/remote-sandbox-terminal"
+  },
+  "scripts": {
+    "build": "bun build src/host.ts --target=node --format=esm --external @lydell/node-pty --outfile dist/host.mjs && bun build src/client.ts --target=node --format=esm --outfile dist/oc.mjs",
+    "typecheck": "tsc --noEmit",
+    "host": "node dist/host.mjs",
+    "oc": "node dist/oc.mjs",
+    "box": "bun src/box.ts",
+    "test:e2e": "bun run build && node test/e2e.mjs",
+    "test:box": "bun run build && E2E_REMOTE=1 node test/e2e.mjs",
+    "test:recover": "bun run build && node test/recover.mjs"
+  },
+  "dependencies": {
+    "@lydell/node-pty": "1.2.0-beta.18",
+    "@upstash/box": "0.8.1",
+    "@upstash/realtime": "1.2.0",
+    "@upstash/redis": "^1.41.0",
+    "@xterm/addon-serialize": "^0.14.0",
+    "undici": "^7.30.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@xterm/headless": "^6.0.0",
+    "typescript": "^5.9.2"
+  },
+  "bin": {
+    "oc": "dist/oc.mjs"
+  }
+}
